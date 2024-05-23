@@ -5,6 +5,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextFormatter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,9 +15,16 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
     @FXML
     private StackedBarChart<Integer, String> stackedBarChart;
+    @FXML
+    private Spinner<Integer> pidSpinner, arrivalTimeSpinner, serviceTimeSpinner, timeQuantumSpinner;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initSpinners();
+
+
+
+
 
         XYChart.Series<Integer, String> series1 = new XYChart.Series<>();
         XYChart.Series<Integer, String> series2 = new XYChart.Series<>();
@@ -37,5 +47,12 @@ public class Controller implements Initializable {
             System.out.println("Button was clicked!");
         });
         data2.getNode().setOnMouseEntered(mouseEvent -> data2.getNode().setCursor(Cursor.HAND));
+    }
+
+    private void initSpinners() {
+        pidSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
+        arrivalTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
+        serviceTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
+        timeQuantumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
     }
 }
