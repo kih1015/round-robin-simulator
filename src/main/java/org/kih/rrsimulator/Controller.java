@@ -1,13 +1,14 @@
 package org.kih.rrsimulator;
 
+import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,10 +18,16 @@ public class Controller implements Initializable {
     private StackedBarChart<Integer, String> stackedBarChart;
     @FXML
     private Spinner<Integer> pidSpinner, arrivalTimeSpinner, serviceTimeSpinner, timeQuantumSpinner;
+    @FXML
+    private Button addButton;
+    @FXML
+    private TableView<Process> processesView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initSpinners();
+        initButtons();
+        initTableView();
 
 
 
@@ -54,5 +61,17 @@ public class Controller implements Initializable {
         arrivalTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
         serviceTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
         timeQuantumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
+    }
+
+    private void initButtons() {
+        addButton.setOnMouseClicked(mouseEvent -> {
+            processesView.getItems().add(new Process(pidSpinner.getValue(), arrivalTimeSpinner.getValue(), serviceTimeSpinner.getValue()));
+        });
+    }
+
+    private void initTableView() {
+        processesView.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("pid"));
+        processesView.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
+        processesView.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("serviceTime"));
     }
 }
