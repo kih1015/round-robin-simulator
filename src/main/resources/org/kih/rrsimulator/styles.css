@@ -1,0 +1,11 @@
+.transparent {
+    -fx-opacity: 0;
+}
+
+.wait {
+    -fx-background-color: #595959;
+}
+
+.burst {
+    -fx-background-color: #ff3030;
+}
