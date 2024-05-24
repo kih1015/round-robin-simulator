@@ -41,7 +41,7 @@ public class Process {
     }
 
     public void incWaitingTime() {
-        --waitingTime;
+        ++waitingTime;
     }
 
     public void setEndTime(int endTime) {

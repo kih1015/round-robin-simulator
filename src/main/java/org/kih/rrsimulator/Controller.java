@@ -66,9 +66,17 @@ public class Controller implements Initializable {
         arrivalTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
         serviceTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
         timeQuantumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
+        pidSpinner.setPromptText("PID");
+        arrivalTimeSpinner.setPromptText("arr-time");
+        serviceTimeSpinner.setPromptText("serv-time");
+        timeQuantumSpinner.setPromptText("TQ");
     }
 
     private void initButtons() {
+        for (XYChart.Series ser : stackedBarChart.getData()) {
+            stackedBarChart.getData().remove(ser);
+        }
+
         addButton.setOnMouseClicked(mouseEvent -> processesView.getItems().add(new Process(pidSpinner.getValue(), arrivalTimeSpinner.getValue(), serviceTimeSpinner.getValue())));
         simulButton.setOnMouseClicked(mouseEvent -> {
             List<Process> readyQueue = new LinkedList<>();
@@ -137,7 +145,13 @@ public class Controller implements Initializable {
 
                 t++;
             }
-            avgWaitTime.setText("2");
+            double waitSum = 0, taSum = 0;
+            for (Process process : processList) {
+                waitSum += process.getWaitingTime();
+                taSum += process.getEndTime() - process.getArrivalTime();
+            }
+            avgWaitTime.setText("" + waitSum / processList.size());
+            avgTaTime.setText("" + taSum / processList.size());
 
         });
     }
