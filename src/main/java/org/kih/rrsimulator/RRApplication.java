@@ -12,7 +12,7 @@ public class RRApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(RRApplication.class.getResource("main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 1062, 650);
         scene.getStylesheets().add(Objects.requireNonNull(RRApplication.class.getResource("styles.css")).toString());
         stage.setTitle("RR simulator");
         stage.setScene(scene);
