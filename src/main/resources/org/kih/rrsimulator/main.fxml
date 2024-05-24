@@ -49,7 +49,7 @@
                               <Insets bottom="5.0" left="5.0" />
                            </VBox.margin>
                         </Label>
-                        <Spinner fx:id="arrivalTimeSpinner" />
+                        <Spinner fx:id="arrivalTimeSpinner" editable="true" />
                      </children>
                      <HBox.margin>
                         <Insets right="5.0" />
@@ -62,7 +62,7 @@
                               <Insets bottom="5.0" left="5.0" />
                            </VBox.margin>
                         </Label>
-                        <Spinner fx:id="serviceTimeSpinner" />
+                        <Spinner fx:id="serviceTimeSpinner" editable="true" />
                      </children>
                      <HBox.margin>
                         <Insets right="5.0" />
@@ -91,7 +91,7 @@
                               <Insets bottom="5.0" />
                            </VBox.margin>
                         </Label>
-                        <Spinner fx:id="timeQuantumSpinner" prefHeight="21.0" prefWidth="171.0" />
+                        <Spinner fx:id="timeQuantumSpinner" editable="true" prefHeight="21.0" prefWidth="171.0" />
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" />
@@ -113,7 +113,7 @@
          <children>
              <StackedBarChart fx:id="stackedBarChart" alternativeRowFillVisible="false" categoryGap="5.0" horizontalZeroLineVisible="false" legendVisible="false" prefHeight="697.0" prefWidth="691.0">
                  <xAxis>
-                     <NumberAxis animated="false" forceZeroInRange="false" label="Time" minorTickCount="1" minorTickLength="1.0" minorTickVisible="false" side="TOP" tickLength="1.0" tickUnit="1.0" upperBound="10.0" />
+                     <NumberAxis animated="false" forceZeroInRange="false" label="Time" minorTickCount="1" minorTickLength="1.0" minorTickVisible="false" tickLength="1.0" tickUnit="1.0" upperBound="10.0" />
                  </xAxis>
                  <yAxis>
                      <CategoryAxis animated="false" label="PID" side="LEFT" />

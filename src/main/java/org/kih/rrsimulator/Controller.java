@@ -1,20 +1,12 @@
 package org.kih.rrsimulator;
 
-import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableListBase;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.StackedBarChart;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
-
 import java.net.URL;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +14,7 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     @FXML
-    private StackedBarChart<Integer, String> stackedBarChart;
+    private StackedBarChart<Number, String> stackedBarChart;
     @FXML
     private Spinner<Integer> pidSpinner, arrivalTimeSpinner, serviceTimeSpinner, timeQuantumSpinner;
     @FXML
@@ -37,29 +29,8 @@ public class Controller implements Initializable {
         initSpinners();
         initButtons();
         initTableView();
+        stackedBarChart.getData().add(new XYChart.Series<>());
 
-
-//        XYChart.Series<Integer, String> series1 = new XYChart.Series<>();
-//        XYChart.Series<Integer, String> series2 = new XYChart.Series<>();
-//
-//        stackedBarChart.getData().add(series1);
-//        stackedBarChart.getData().add(series2);
-//
-//        series1.setName("BT");
-//        XYChart.Data<Integer, String> data1 = new XYChart.Data<>(3, "P1");
-//        XYChart.Data<Integer, String> data2 = new XYChart.Data<>(4, "P1");
-//        XYChart.Data<Integer, String> data3 = new XYChart.Data<>(3, "P1");
-//        series1.getData().add(data1);
-//        series1.getData().add(data2);
-//        series1.getData().add(data3);
-//
-//        data1.getNode().getStyleClass().add("transparent");
-//        data2.getNode().getStyleClass().add("wait");
-//        data3.getNode().getStyleClass().add("burst");
-//        data2.getNode().setOnMouseClicked(event -> {
-//            System.out.println("Button was clicked!");
-//        });
-//        data2.getNode().setOnMouseEntered(mouseEvent -> data2.getNode().setCursor(Cursor.HAND));
     }
 
     private void initSpinners() {
@@ -67,10 +38,6 @@ public class Controller implements Initializable {
         arrivalTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0, 1));
         serviceTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1, 1));
         timeQuantumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1, 1));
-        pidSpinner.setPromptText("PID");
-        arrivalTimeSpinner.setPromptText("arr-time");
-        serviceTimeSpinner.setPromptText("serv-time");
-        timeQuantumSpinner.setPromptText("TQ");
     }
 
     private void initButtons() {
@@ -78,20 +45,15 @@ public class Controller implements Initializable {
             ObservableList<Process> selected, all;
             all = processesView.getItems();
             selected = processesView.getSelectionModel().getSelectedItems();
-
             selected.forEach(all::remove);
         });
-
         addButton.setOnMouseClicked(mouseEvent -> {
             if (processesView.getItems().stream().allMatch(process -> process.getPid() != pidSpinner.getValue())) {
                 processesView.getItems().add(new Process(pidSpinner.getValue(), arrivalTimeSpinner.getValue(), serviceTimeSpinner.getValue()));
             }
         });
         simulButton.setOnMouseClicked(mouseEvent -> {
-            for (XYChart.Series<Integer, String> ser : stackedBarChart.getData()) {
-                stackedBarChart.getData().remove(ser);
-            }
-
+            stackedBarChart.getData().get(0).getData().clear();
             List<Process> readyQueue = new LinkedList<>();
             final int timeQuantum = timeQuantumSpinner.getValue();
             int processTime = 0;
@@ -99,10 +61,6 @@ public class Controller implements Initializable {
             int t = 0;
             List<Process> processList = new ArrayList<>(processesView.getItems().size());
             processList.addAll(processesView.getItems());
-
-            for (Process p : processList) {
-                stackedBarChart.getData().add(new XYChart.Series<>());
-            }
 
             while (true) {
                 // 대기중인 프로세스 웨이팅시간 증가
@@ -141,17 +99,17 @@ public class Controller implements Initializable {
                 }
                 // 뷰 업데이트
                 if (runProcess != null) {
-                    XYChart.Data<Integer, String> data = new XYChart.Data<>(1, "P" + runProcess.getPid());
-                    stackedBarChart.getData().get(processList.indexOf(runProcess)).getData().add(data);
+                    XYChart.Data<Number, String> data = new XYChart.Data<>(1, "P" + runProcess.getPid());
+                    stackedBarChart.getData().get(0).getData().add(data);
                     data.getNode().getStyleClass().add("burst");
                 }
                 for (Process process : processList) {
-                    XYChart.Data<Integer, String> data = new XYChart.Data<>(1, "P" + process.getPid());
+                    XYChart.Data<Number, String> data = new XYChart.Data<>(1, "P" + process.getPid());
                     if (readyQueue.contains(process)) {
-                        stackedBarChart.getData().get(processList.indexOf(process)).getData().add(data);
+                        stackedBarChart.getData().get(0).getData().add(data);
                         data.getNode().getStyleClass().add("wait");
                     } else if (process.getArrivalTime() > t) {
-                        stackedBarChart.getData().get(processList.indexOf(process)).getData().add(data);
+                        stackedBarChart.getData().get(0).getData().add(data);
                         data.getNode().getStyleClass().add("transparent");
                     }
                 }
@@ -173,5 +131,10 @@ public class Controller implements Initializable {
         processesView.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("pid"));
         processesView.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
         processesView.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("serviceTime"));
+    }
+
+    private  void removeAll() {
+        ObservableList<XYChart.Series<Number, String>> ol = stackedBarChart.getData();
+        ol.get(0).getData().clear();
     }
 }
