@@ -16,6 +16,7 @@ public class RRApplication extends Application {
         scene.getStylesheets().add(Objects.requireNonNull(RRApplication.class.getResource("styles.css")).toString());
         stage.setTitle("RR simulator");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

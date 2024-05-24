@@ -17,11 +17,11 @@
    <children>
       <VBox prefHeight="650.0" prefWidth="399.0">
          <children>
-            <TableView fx:id="processesView" prefHeight="675.0" prefWidth="499.0">
+            <TableView fx:id="processesView" prefHeight="675.0" prefWidth="361.0">
                <columns>
                   <TableColumn editable="false" prefWidth="120.0" resizable="false" style="-fx-alignment: center" text="Process ID" />
-                  <TableColumn editable="false" prefWidth="114.0" resizable="false" style="-fx-alignment: center" text="Arrival Time" />
-                  <TableColumn editable="false" prefWidth="108.0" resizable="false" style="-fx-alignment: center" text="Service Time" />
+                  <TableColumn editable="false" prefWidth="120.0" resizable="false" style="-fx-alignment: center" text="Arrival Time" />
+                  <TableColumn editable="false" prefWidth="120.0" resizable="false" style="-fx-alignment: center" text="Service Time" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -29,22 +29,49 @@
             </TableView>
             <HBox prefHeight="100.0" prefWidth="517.0">
                <children>
-                  <Spinner fx:id="pidSpinner" editable="true">
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label alignment="CENTER" text="Process ID">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Spinner fx:id="pidSpinner" editable="true" />
+                     </children>
                      <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets right="5.0" />
                      </HBox.margin>
-                  </Spinner>
-                  <Spinner fx:id="arrivalTimeSpinner">
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Arr Time">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Spinner fx:id="arrivalTimeSpinner" />
+                     </children>
                      <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets right="5.0" />
                      </HBox.margin>
-                  </Spinner>
-                  <Spinner fx:id="serviceTimeSpinner">
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Serv Time">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Spinner fx:id="serviceTimeSpinner" />
+                     </children>
                      <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets right="5.0" />
                      </HBox.margin>
-                  </Spinner>
-                  <Button fx:id="addButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" text="Add" textAlignment="CENTER" />
+                  </VBox>
+                  <Button fx:id="addButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" text="Add" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets top="18.0" />
+                     </HBox.margin></Button>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -52,12 +79,20 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Spinner fx:id="timeQuantumSpinner" prefHeight="21.0" prefWidth="171.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Time Quantum">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Spinner fx:id="timeQuantumSpinner" prefHeight="21.0" prefWidth="171.0" />
+                     </children>
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" />
                      </HBox.margin>
-                  </Spinner>
-                  <Button fx:id="simulButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="346.0" text="Simulate">
+                  </VBox>
+                  <Button fx:id="simulButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="252.0" text="Simulate">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
