@@ -1,6 +1,7 @@
 package org.kih.rrsimulator;
 
 import javafx.beans.property.ReadOnlyBooleanWrapper;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableListBase;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,7 +26,7 @@ public class Controller implements Initializable {
     @FXML
     private Spinner<Integer> pidSpinner, arrivalTimeSpinner, serviceTimeSpinner, timeQuantumSpinner;
     @FXML
-    private Button addButton, simulButton;
+    private Button addButton, delButton, simulButton;
     @FXML
     private TableView<Process> processesView;
     @FXML
@@ -73,12 +74,24 @@ public class Controller implements Initializable {
     }
 
     private void initButtons() {
-        for (XYChart.Series ser : stackedBarChart.getData()) {
-            stackedBarChart.getData().remove(ser);
-        }
+        delButton.setOnMouseClicked(mouseEvent -> {
+            ObservableList<Process> selected, all;
+            all = processesView.getItems();
+            selected = processesView.getSelectionModel().getSelectedItems();
 
-        addButton.setOnMouseClicked(mouseEvent -> processesView.getItems().add(new Process(pidSpinner.getValue(), arrivalTimeSpinner.getValue(), serviceTimeSpinner.getValue())));
+            selected.forEach(all::remove);
+        });
+
+        addButton.setOnMouseClicked(mouseEvent -> {
+            if (processesView.getItems().stream().allMatch(process -> process.getPid() != pidSpinner.getValue())) {
+                processesView.getItems().add(new Process(pidSpinner.getValue(), arrivalTimeSpinner.getValue(), serviceTimeSpinner.getValue()));
+            }
+        });
         simulButton.setOnMouseClicked(mouseEvent -> {
+            for (XYChart.Series<Integer, String> ser : stackedBarChart.getData()) {
+                stackedBarChart.getData().remove(ser);
+            }
+
             List<Process> readyQueue = new LinkedList<>();
             final int timeQuantum = timeQuantumSpinner.getValue();
             int processTime = 0;
